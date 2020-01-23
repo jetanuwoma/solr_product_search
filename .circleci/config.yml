@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/solr_product_search
     docker:
-      - image: circleci/ruby:2.6.3
+      - image: circleci/ruby:2.6.3-stretch-node
         environment:
           PGHOST: localhost
           PGUSER: solr_product_search
@@ -22,7 +22,6 @@ jobs:
       - run: gem install bundler
       - run: bundle install
       # Setup the environment
-      - run: cp .sample.env .env
 
       # Setup the database
       - run: bundle exec rake db:setup
