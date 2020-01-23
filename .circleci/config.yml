@@ -1,0 +1,31 @@
+---
+version: 2
+jobs:
+  build:
+    working_directory: ~/solr_product_search
+    docker:
+      - image: circleci/ruby:2.6.3
+        environment:
+          PGHOST: localhost
+          PGUSER: solr_product_search
+          RAILS_ENV: test
+      - image: postgres:9.5
+        environment:
+          POSTGRES_USER: solr_product_search
+          POSTGRES_DB: solr_product_search_test
+          POSTGRES_PASSWORD: ""
+
+    steps:
+      - checkout
+
+      - run: gem update --system
+      - run: gem install bundler
+      - run: bundle install
+      # Setup the environment
+      - run: cp .sample.env .env
+
+      # Setup the database
+      - run: bundle exec rake db:setup
+
+      # Run the tests
+      - run: bundle exec rspec
