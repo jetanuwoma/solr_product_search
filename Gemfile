@@ -34,6 +34,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'webpacker'
 gem 'react-rails'
 
+gem 'sunspot_rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -43,6 +45,7 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
+  gem 'sunspot_solr'
 end
 
 group :development do
