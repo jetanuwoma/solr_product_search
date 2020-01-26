@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from "prop-types"
 
 import InputRange from 'react-input-range';
+import ReactPaginate from 'react-paginate';
 
 import ProductCard from './product'
 import SearchForm from './SearchForm'
@@ -22,9 +23,12 @@ class HomePage extends React.Component {
         },
         country: '',
         tags: '',
-        sortby: ''
+        sortby: '',
+        page: 1
       },
-      products: this.props.products
+      products: this.props.products,
+      pageCount: this.props.pageCount,
+      perPage: 20,
     }
   }
 
@@ -33,6 +37,13 @@ class HomePage extends React.Component {
     event.preventDefault();
     console.log(item)
   }
+
+  handlePageClick = data => {
+    const { search } = this.state;
+    this.setState({ search: { ...search, page: data.selected + 1 } }, () => {
+      this.handleProductSearch({ preventDefault: () =>1});
+    })
+  };
 
   handleProductSearch = (event) => {
     const data = this.state.search;
@@ -46,7 +57,7 @@ class HomePage extends React.Component {
       body: JSON.stringify(data)
     }).then((response) => response.json())
       .then((data) => {
-        this.setState({ products: data.products })
+        this.setState({ products: data.products, pageCount: data.pageCount })
       }).catch(error => {
         console.log(error)
       })
@@ -63,7 +74,7 @@ class HomePage extends React.Component {
   }
 
   onSortChanged = (event) => {
-    const {search} = this.state;
+    const { search } = this.state;
     this.setState({ search: { ...search, sortby: event.target.value } }, () => {
       this.handleProductSearch(event);
     })
@@ -168,9 +179,9 @@ class HomePage extends React.Component {
                   <label className="input-group-text" htmlFor="inputGroupSelect01">Sort By</label>
                 </div>
                 <select
-                className="custom-select"
-                id="inputGroupSelect01"
-                onChange={this.onSortChanged}
+                  className="custom-select"
+                  id="inputGroupSelect01"
+                  onChange={this.onSortChanged}
                 >
                   <option>Choose...</option>
                   <option value="relevant">Relevant</option>
@@ -190,6 +201,19 @@ class HomePage extends React.Component {
                   />
                 ))}
               </div>
+              <ReactPaginate
+                previousLabel={'previous'}
+                nextLabel={'next'}
+                breakLabel={'...'}
+                breakClassName={'break-me'}
+                pageCount={this.state.pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={this.handlePageClick}
+                containerClassName={'pagination'}
+                subContainerClassName={'pages pagination'}
+                activeClassName={'active'}
+              />
             </div>
           </div>
         </div>
@@ -199,11 +223,13 @@ class HomePage extends React.Component {
 }
 
 HomePage.propTypes = {
-  products: PropTypes.array
+  products: PropTypes.array,
+  pageCount: PropTypes.number,
 };
 
 HomePage.defaultPropTypes = {
-  products: []
+  products: [],
+  pageCount: 1
 }
 
 
