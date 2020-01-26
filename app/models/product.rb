@@ -47,7 +47,7 @@ class Product < ApplicationRecord
         end
       end
 
-      limit search_criteria[:limit] if search_criteria[:limit].present?
+      paginate page: search_criteria[:page], per_page: 20
     end
 
     search.results
