@@ -15,7 +15,12 @@ gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
+
+gem 'activerecord-import', '~> 1.0.2' # bulk ActiveRecord insert
+gem 'faker', require: false # Allows for building fake data better
 gem 'uglifier', '>= 1.3.0'
+gem 'pry'
+gem 'rb-readline'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -35,6 +40,7 @@ gem 'webpacker'
 gem 'react-rails'
 
 gem 'sunspot_rails'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
